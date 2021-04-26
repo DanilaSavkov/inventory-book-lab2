@@ -1,4 +1,4 @@
-package bsuir.ppvis.view.menus;
+package bsuir.ppvis.view.decomposition.menus;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;

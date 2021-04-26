@@ -1,4 +1,4 @@
-package bsuir.ppvis.view.pagecontrol;
+package bsuir.ppvis.view.decomposition.pagecontrol;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

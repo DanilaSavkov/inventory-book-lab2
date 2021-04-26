@@ -1,15 +1,16 @@
 package bsuir.ppvis.model;
 
 import bsuir.ppvis.model.decomposition.Record;
+import javafx.collections.FXCollections;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryBookModel {
-    private final List<Record> records;
+    private List<Record> records;
 
     public InventoryBookModel() {
-        this.records = new ArrayList<>();
+        this.records = FXCollections.observableArrayList();
     }
 
     public InventoryBookModel(List<Record> records) {
@@ -18,6 +19,10 @@ public class InventoryBookModel {
 
     public List<Record> getRecords() {
         return records;
+    }
+
+    public void setRecords(List<Record> records) {
+        this.records = records;
     }
 
     public void add(Record record) {

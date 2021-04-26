@@ -5,6 +5,7 @@ import bsuir.ppvis.model.decomposition.Fabricator;
 import bsuir.ppvis.model.decomposition.Product;
 import bsuir.ppvis.model.decomposition.Record;
 import bsuir.ppvis.model.decomposition.Storage;
+import bsuir.ppvis.model.exceptions.XMLReadingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -14,48 +15,46 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class InventoryBookReader implements InventoryBookXMLConstants {
     private static InventoryBookModel inventoryBook;
 
     private static class XMLInventoryBookReader extends DefaultHandler {
-        private List<Fabricator> fabricators = new ArrayList<>();
-        private List<Storage> storages = new ArrayList<>();
-        private Product product;
-        private Storage storage;
-        private Record record;
         private String productName;
         private String fabricatorName;
         private int fabricatorPayerAccountNumber;
-        private int countOnStorage;
+        private String productCountOnStorage;
+        private String storageAddress;
 
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) {
-            switch (qName) {
-                case INVENTORY_BOOK:
-                    break;
-                case RECORD:
-                    break;
-                case PRODUCT:
-                    break;
-                case FABRICATOR:
-                    break;
-                case COUNT_ON_STORAGE:
-                    break;
-                case STORAGE_ADDRESS:
-                    break;
+            if (qName.equals(RECORD)) {
+                productName = attributes.getValue(PRODUCT_NAME);
+                fabricatorName = attributes.getValue(FABRICATOR_NAME);
+                fabricatorPayerAccountNumber = Integer.parseInt(attributes.getValue(FABRICATOR_PAYER_ACCOUNT_NUMBER));
+                productCountOnStorage = attributes.getValue(PRODUCT_COUNT_ON_STORAGE);
+                storageAddress = attributes.getValue(STORAGE_ADDRESS);
             }
         }
 
         @Override
         public void endElement(String uri, String localName, String qName) {
-
+            if (qName.equals(RECORD)) {
+                Fabricator fabricator = new Fabricator(fabricatorName, fabricatorPayerAccountNumber);
+                Product product = new Product(productName, fabricator);
+                Storage storage = new Storage(storageAddress);
+                storage.add(product, Integer.parseInt(productCountOnStorage));
+                Record record = new Record(product, storage);
+                inventoryBook.add(record);
+            }
         }
     }
 
-    public static InventoryBookModel read(File file) throws XMLReadingException {
+    public InventoryBookReader() {
+        inventoryBook = new InventoryBookModel();
+    }
+
+    public InventoryBookModel read(File file) throws XMLReadingException {
         parseFile(file);
         return inventoryBook;
     }

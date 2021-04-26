@@ -1,7 +1,7 @@
 package bsuir.ppvis.view.decomposition;
 
-import bsuir.ppvis.view.pagecontrol.PageSwitcher;
-import bsuir.ppvis.view.pagecontrol.RecordsState;
+import bsuir.ppvis.view.decomposition.pagecontrol.PageSwitcher;
+import bsuir.ppvis.view.decomposition.pagecontrol.RecordsState;
 import javafx.scene.layout.*;
 
 public class AppPageControl {

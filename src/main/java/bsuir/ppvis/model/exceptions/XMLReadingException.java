@@ -1,4 +1,4 @@
-package bsuir.ppvis.model.file;
+package bsuir.ppvis.model.exceptions;
 
 public class XMLReadingException extends Exception {
     public XMLReadingException() {

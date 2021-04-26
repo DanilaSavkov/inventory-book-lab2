@@ -12,12 +12,20 @@ public class AppToolBar {
     private static final Button DELETE_BUTTON = new Button("DELETE");
 
     public static ToolBar getToolBar() {
+        configureToolBar();
+        return TOOL_BAR;
+    }
+
+    private static void configureToolBar() {
         TOOL_BAR.getItems().addAll(ADD_BUTTON, SEARCH_BUTTON, DELETE_BUTTON);
         TOOL_BAR.setOrientation(Orientation.VERTICAL);
+        configureButtons();
+    }
+
+    private static void configureButtons() {
         ADD_BUTTON.setPrefSize(BUTTON_SIZE, BUTTON_SIZE);
         SEARCH_BUTTON.setPrefSize(BUTTON_SIZE, BUTTON_SIZE);
         DELETE_BUTTON.setPrefSize(BUTTON_SIZE, BUTTON_SIZE);
-        return TOOL_BAR;
     }
 
     public static Button getAddButton() {
