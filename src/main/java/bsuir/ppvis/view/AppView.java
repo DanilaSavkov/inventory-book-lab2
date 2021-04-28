@@ -75,6 +75,7 @@ public class AppView implements ViewStyles {
         FileMenu.getOpenItem().setOnAction(actionEvent -> openTable());
         FileMenu.getSaveItem().setOnAction(actionEvent -> saveTable());
         EditMenu.getAddItem().setOnAction(actionEvent -> addRecordOrNothing());
+        EditMenu.getDeleteItem().setOnAction(actionEvent -> removeRecords());
     }
 
     private void configureFileChooser() {
@@ -94,8 +95,11 @@ public class AppView implements ViewStyles {
     }
 
     private void removeRecords() {
-        TableRecordsDialog dialog = new RemoveTableRecordsDialog(model);
-        dialog.showAndWait();
+        InventoryBookModel modelClone = new InventoryBookModel(model);
+        TableRecordsDialog dialog = new RemoveTableRecordsDialog(modelClone);
+        Optional<InventoryBookModel> result = dialog.showAndWait();
+        result.ifPresent(record -> controller.setModel(result.orElse(model)));
+        updateTableContent();
     }
 
     private void saveTable() {

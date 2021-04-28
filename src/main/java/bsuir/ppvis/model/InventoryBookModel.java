@@ -17,9 +17,12 @@ public class InventoryBookModel {
     }
 
     public InventoryBookModel(InventoryBookModel model) {
-        this.records = model.records;
+        this.records = FXCollections.observableArrayList();
         this.fabricatorPool = new FabricatorPool();
         this.storagePool = new StoragePool();
+        for (Record record : model.records) {
+            add(record);
+        }
     }
 
     public List<Record> getRecords() {

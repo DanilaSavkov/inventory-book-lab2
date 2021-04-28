@@ -7,7 +7,7 @@ import bsuir.ppvis.model.decomposition.Record;
 import javafx.collections.ObservableList;
 
 public class SearchTableRecordsDialog extends TableRecordsDialog {
-    private InventoryBookSearchController controller;
+    private final InventoryBookSearchController controller;
 
     public SearchTableRecordsDialog(InventoryBookModel model) {
         super("Найти записи", model);
