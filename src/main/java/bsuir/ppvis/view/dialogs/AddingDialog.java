@@ -25,7 +25,6 @@ public class AddingDialog extends Dialog<Record> {
                 else return getRecordByDialog();
             }
         });
-        Button button = new Button();
     }
 
     private Record getRecordByDialog() {

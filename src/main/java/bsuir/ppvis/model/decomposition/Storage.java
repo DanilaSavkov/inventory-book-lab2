@@ -22,6 +22,10 @@ public class Storage {
         return register;
     }
 
+    public boolean equals(Storage storage) {
+        return this.address.equals(storage.address);
+    }
+
     public void add(Product product, int count) {
         if (register.containsKey(product)) {
             int currentCount = register.get(product);
@@ -47,5 +51,15 @@ public class Storage {
         if (register.containsKey(product)) {
             return register.get(product);
         } else throw new ProductNotFoundException();
+    }
+
+    @Override
+    public String toString() {
+        String result = "Storage{" + "address='" + address + '\'' + ", register=";
+        for (Product product : register.keySet()) {
+            String position = "(" + product.getName() + " - " + register.get(product) + ")";
+            result += position + ", ";
+        }
+        return result;
     }
 }

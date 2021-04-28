@@ -16,4 +16,16 @@ public class Fabricator {
     public int getPayerAccountNumber() {
         return payerAccountNumber;
     }
+
+    public boolean equals(Fabricator fabricator) {
+        return (this.name.equals(fabricator.name) && this.payerAccountNumber == fabricator.payerAccountNumber);
+    }
+
+    @Override
+    public String toString() {
+        return "Fabricator{" +
+                "name='" + name + '\'' +
+                ", payerAccountNumber=" + payerAccountNumber +
+                '}';
+    }
 }

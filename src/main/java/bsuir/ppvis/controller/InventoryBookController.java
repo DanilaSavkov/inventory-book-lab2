@@ -3,6 +3,7 @@ package bsuir.ppvis.controller;
 import bsuir.ppvis.model.InventoryBookModel;
 import bsuir.ppvis.model.decomposition.Record;
 
+
 public class InventoryBookController {
     private final InventoryBookModel model;
 
@@ -14,8 +15,7 @@ public class InventoryBookController {
         model.add(record);
     }
 
-    public void rewrite(InventoryBookModel model) {
-        this.model.getRecords().removeIf(record -> true);
-        this.model.getRecords().addAll(model.getRecords());
+    public void setModel(InventoryBookModel model) {
+        this.model.setRecords(model.getRecords());
     }
 }

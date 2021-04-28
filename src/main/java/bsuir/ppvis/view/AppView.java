@@ -8,13 +8,14 @@ import bsuir.ppvis.model.exceptions.XMLWritingException;
 import bsuir.ppvis.model.file.InventoryBookReader;
 import bsuir.ppvis.model.file.InventoryBookWriter;
 import bsuir.ppvis.view.decomposition.AppMenuBar;
-import bsuir.ppvis.view.decomposition.AppPageControl;
+import bsuir.ppvis.view.decomposition.PageControl;
 import bsuir.ppvis.view.decomposition.AppTableView;
 import bsuir.ppvis.view.decomposition.AppToolBar;
 import bsuir.ppvis.view.decomposition.menus.EditMenu;
 import bsuir.ppvis.view.decomposition.menus.FileMenu;
 import bsuir.ppvis.view.dialogs.AddingDialog;
 import bsuir.ppvis.view.dialogs.AppChooser;
+import bsuir.ppvis.view.dialogs.SearchDialog;
 import bsuir.ppvis.view.styles.ViewStyles;
 import javafx.collections.ObservableList;
 import javafx.scene.Parent;
@@ -32,12 +33,13 @@ public class AppView implements ViewStyles {
     private static final BorderPane VIEW = new BorderPane();
     private static final MenuBar MENU_BAR = AppMenuBar.getMenuBar();    // top
     private static final ToolBar TOOL_BAR = AppToolBar.getToolBar();    // left
-    private static final BorderPane PAGE_CONTROL = AppPageControl.getPageControl();  // bottom
-    private static final TableView<Record> TABLE = AppTableView.getTableView();    // center
+    private final BorderPane pageControl;  // bottom
+    private static final TableView<Record> TABLE = new AppTableView();    // center
 
     public AppView(InventoryBookModel model, InventoryBookController controller) {
         this.model = model;
         this.controller = controller;
+        this.pageControl = new PageControl();
         configureView();
     }
 
@@ -50,7 +52,7 @@ public class AppView implements ViewStyles {
         configureMenuBar();
         VIEW.setLeft(TOOL_BAR);
         configureToolBar();
-        VIEW.setBottom(PAGE_CONTROL);
+        VIEW.setBottom(pageControl);
         VIEW.setCenter(TABLE);
         TABLE.setItems((ObservableList<Record>) model.getRecords());
         setStyles();
@@ -58,6 +60,7 @@ public class AppView implements ViewStyles {
 
     private void configureToolBar() {
         AppToolBar.getAddButton().setOnAction(actionEvent -> addRecordOrNothing());
+        AppToolBar.getSearchButton().setOnAction(actionEvent -> searchRecords());
     }
 
     private void configureMenuBar() {
@@ -70,6 +73,11 @@ public class AppView implements ViewStyles {
         Dialog<Record> dialog = new AddingDialog();
         Optional<Record> result = dialog.showAndWait();
         result.ifPresent(record -> controller.add(result.orElse(null)));
+    }
+
+    private void searchRecords() {
+        Dialog dialog = new SearchDialog();
+        dialog.showAndWait();
     }
 
     private void saveTable() {
@@ -87,16 +95,21 @@ public class AppView implements ViewStyles {
         File file = AppChooser.getFileChooser().showOpenDialog(new Stage());
         try {
             InventoryBookModel model = reader.read(file);
-            controller.rewrite(model);
+            controller.setModel(model);
+            updateTableContent();
         } catch (XMLReadingException e) {
             e.printStackTrace();
         }
+    }
+
+    private void updateTableContent() {
+        TABLE.setItems((ObservableList<Record>) model.getRecords());
     }
 
     @Override
     public void setStyles() {
         MENU_BAR.setStyle(MENU_BAR_CSS_STYLE);
         TOOL_BAR.setStyle(TOOL_BAR_CSS_STYLE);
-        PAGE_CONTROL.setStyle(PAGE_CONTROL_CSS_STYLE);
+        pageControl.setStyle(PAGE_CONTROL_CSS_STYLE);
     }
 }

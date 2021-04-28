@@ -1,24 +1,31 @@
 package bsuir.ppvis.model;
 
-import bsuir.ppvis.model.decomposition.Record;
+import bsuir.ppvis.model.decomposition.*;
 import javafx.collections.FXCollections;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryBookModel {
     private List<Record> records;
+    private final FabricatorPool fabricatorPool;
+    private final StoragePool storagePool; // плохо работает
 
     public InventoryBookModel() {
         this.records = FXCollections.observableArrayList();
-    }
-
-    public InventoryBookModel(List<Record> records) {
-        this.records = records;
+        this.fabricatorPool = new FabricatorPool();
+        this.storagePool = new StoragePool();
     }
 
     public List<Record> getRecords() {
         return records;
+    }
+
+    public FabricatorPool getFabricatorPool() {
+        return fabricatorPool;
+    }
+
+    public StoragePool getStoragePool() {
+        return storagePool;
     }
 
     public void setRecords(List<Record> records) {
@@ -27,19 +34,7 @@ public class InventoryBookModel {
 
     public void add(Record record) {
         records.add(record);
-    }
-
-    public void remove(Record record) {
-        records.remove(record);
-    }
-
-    public List<Record> search(String productName) {
-        List<Record> result = new ArrayList<>();
-        for (Record record : records) {
-            if (record.getProductName().equals(productName)) {
-                result.add(record);
-            }
-        }
-        return result;
+        fabricatorPool.add(record.getProduct().getFabricator());
+        storagePool.add(record.getStorage());
     }
 }

@@ -3,46 +3,39 @@ package bsuir.ppvis.model.decomposition;
 import bsuir.ppvis.model.exceptions.ProductNotFoundException;
 
 public class Record {
-    private String productName;
-    private String fabricatorName;
-    private int fabricatorPayerAccountNumber;
     private String productCountOnStorage;
-    private String storageAddress;
+    private final Product product;
+    private final Storage storage;
 
     public Record(Product product, Storage storage) {
-        this.productName = product.getName();
-        this.fabricatorName = product.getFabricator().getName();
-        this.fabricatorPayerAccountNumber = product.getFabricator().getPayerAccountNumber();
+        this.product = product;
+        this.storage = storage;
         try {
             int count = storage.getProductCount(product);
             this.productCountOnStorage = String.valueOf(count);
         } catch (ProductNotFoundException e) {
             this.productCountOnStorage = "нет на складе";
         }
-        this.storageAddress = storage.getAddress();
     }
 
-    @Override
-    public String toString() {
-        return "Record{" +
-                "productName='" + productName + '\'' +
-                ", fabricatorName='" + fabricatorName + '\'' +
-                ", fabricatorPayerAccountNumber=" + fabricatorPayerAccountNumber +
-                ", productCountOnStorage='" + productCountOnStorage + '\'' +
-                ", storageAddress='" + storageAddress + '\'' +
-                '}';
+    public Product getProduct() {
+        return product;
+    }
+
+    public Storage getStorage() {
+        return storage;
     }
 
     public String getProductName() {
-        return productName;
+        return product.getName();
     }
 
     public String getFabricatorName() {
-        return fabricatorName;
+        return product.getFabricator().getName();
     }
 
     public int getFabricatorPayerAccountNumber() {
-        return fabricatorPayerAccountNumber;
+        return product.getFabricator().getPayerAccountNumber();
     }
 
     public String getProductCountOnStorage() {
@@ -50,26 +43,6 @@ public class Record {
     }
 
     public String getStorageAddress() {
-        return storageAddress;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public void setFabricatorName(String fabricatorName) {
-        this.fabricatorName = fabricatorName;
-    }
-
-    public void setFabricatorPayerAccountNumber(int fabricatorPayerAccountNumber) {
-        this.fabricatorPayerAccountNumber = fabricatorPayerAccountNumber;
-    }
-
-    public void setProductCountOnStorage(String productCountOnStorage) {
-        this.productCountOnStorage = productCountOnStorage;
-    }
-
-    public void setStorageAddress(String storageAddress) {
-        this.storageAddress = storageAddress;
+        return storage.getAddress();
     }
 }
