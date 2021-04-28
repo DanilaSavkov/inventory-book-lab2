@@ -18,4 +18,8 @@ public class InventoryBookController {
     public void setModel(InventoryBookModel model) {
         this.model.setRecords(model.getRecords());
     }
+
+    public void remove(Record record) {
+        model.remove(record);
+    }
 }

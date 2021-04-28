@@ -1,5 +1,6 @@
-package bsuir.ppvis.view.dialogs;
+package bsuir.ppvis.view.dialogs.content;
 
+import bsuir.ppvis.model.decomposition.RecordField;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -14,11 +15,11 @@ public class AddingDialogContent extends GridPane {
 
     public AddingDialogContent() {
         super();
-        this.addRow(0, new Label("Название продукта:"), productNameField);
-        this.addRow(1, new Label("Название производителя:"), fabricatorNameField);
-        this.addRow(2, new Label("УНП производителя:"), fabricatorPanField);
-        this.addRow(3, new Label("Количество на складе:"), productCountField);
-        this.addRow(4, new Label("Адрес склада:"), storageAddressField);
+        this.addRow(0, new Label(RecordField.PRODUCT_NAME.getName() + ": "), productNameField);
+        this.addRow(1, new Label(RecordField.FABRICATOR_NAME.getName() + ": "), fabricatorNameField);
+        this.addRow(2, new Label(RecordField.FABRICATOR_NUMBER.getName() + ": "), fabricatorPanField);
+        this.addRow(3, new Label(RecordField.PRODUCT_COUNT.getName() + ": "), productCountField);
+        this.addRow(4, new Label(RecordField.STORAGE_ADDRESS.getName() + ": "), storageAddressField);
         setFieldValueToInteger(fabricatorPanField, 9);
         setFieldValueToInteger(productCountField, 6);
     }

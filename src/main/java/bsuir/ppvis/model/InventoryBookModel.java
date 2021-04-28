@@ -16,6 +16,12 @@ public class InventoryBookModel {
         this.storagePool = new StoragePool();
     }
 
+    public InventoryBookModel(InventoryBookModel model) {
+        this.records = model.records;
+        this.fabricatorPool = new FabricatorPool();
+        this.storagePool = new StoragePool();
+    }
+
     public List<Record> getRecords() {
         return records;
     }
@@ -36,5 +42,9 @@ public class InventoryBookModel {
         records.add(record);
         fabricatorPool.add(record.getProduct().getFabricator());
         storagePool.add(record.getStorage());
+    }
+
+    public void remove(Record record) {
+        records.remove(record);
     }
 }

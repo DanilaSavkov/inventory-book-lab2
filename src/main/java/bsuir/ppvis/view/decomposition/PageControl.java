@@ -1,7 +1,5 @@
 package bsuir.ppvis.view.decomposition;
 
-import bsuir.ppvis.controller.InventoryBookController;
-import bsuir.ppvis.model.InventoryBookModel;
 import bsuir.ppvis.view.decomposition.pagecontrol.PageSwitcher;
 import bsuir.ppvis.view.decomposition.pagecontrol.StatusBar;
 import javafx.scene.layout.*;

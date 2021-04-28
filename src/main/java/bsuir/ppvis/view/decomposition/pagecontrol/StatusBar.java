@@ -1,7 +1,5 @@
 package bsuir.ppvis.view.decomposition.pagecontrol;
 
-import bsuir.ppvis.controller.InventoryBookController;
-import bsuir.ppvis.model.InventoryBookModel;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
