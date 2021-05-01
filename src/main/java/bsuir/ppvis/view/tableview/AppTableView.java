@@ -1,4 +1,4 @@
-package bsuir.ppvis.view.decomposition;
+package bsuir.ppvis.view.tableview;
 
 import bsuir.ppvis.model.decomposition.Record;
 import bsuir.ppvis.model.decomposition.RecordField;
@@ -15,8 +15,8 @@ public class AppTableView extends TableView<Record> {
 
     public AppTableView() {
         super();
-        this.getColumns().addAll(productName, fabricatorName, fabricatorNumber, storageCount, storageAddress);
-        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        getColumns().addAll(productName, fabricatorName, fabricatorNumber, storageCount, storageAddress);
+        setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         configureColumns();
     }
 

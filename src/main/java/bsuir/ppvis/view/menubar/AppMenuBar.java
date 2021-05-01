@@ -1,9 +1,9 @@
-package bsuir.ppvis.view.decomposition;
+package bsuir.ppvis.view.menubar;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import bsuir.ppvis.view.decomposition.menus.EditMenu;
-import bsuir.ppvis.view.decomposition.menus.FileMenu;
+import bsuir.ppvis.view.menubar.menus.EditMenu;
+import bsuir.ppvis.view.menubar.menus.FileMenu;
 
 public class AppMenuBar {
     private static final MenuBar MENU_BAR = new MenuBar();

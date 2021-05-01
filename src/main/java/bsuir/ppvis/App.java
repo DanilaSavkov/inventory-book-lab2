@@ -1,6 +1,6 @@
 package bsuir.ppvis;
 
-import bsuir.ppvis.controller.InventoryBookController;
+import bsuir.ppvis.controller.AddingController;
 import bsuir.ppvis.model.InventoryBookModel;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -13,7 +13,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         InventoryBookModel model = new InventoryBookModel();
-        InventoryBookController controller = new InventoryBookController(model);
+        AddingController controller = new AddingController(model);
         AppView appView = new AppView(model, controller);
         Scene scene = new Scene(appView.asParent(), 640, 480);
         stage.setScene(scene);

@@ -2,12 +2,13 @@ package bsuir.ppvis.controller;
 
 import bsuir.ppvis.model.InventoryBookModel;
 import bsuir.ppvis.model.decomposition.Record;
+import javafx.collections.ObservableList;
 
 
-public class InventoryBookController {
+public class AddingController {
     private final InventoryBookModel model;
 
-    public InventoryBookController(InventoryBookModel model) {
+    public AddingController(InventoryBookModel model) {
         this.model = model;
     }
 
@@ -16,10 +17,6 @@ public class InventoryBookController {
     }
 
     public void setModel(InventoryBookModel model) {
-        this.model.setRecords(model.getRecords());
-    }
-
-    public void remove(Record record) {
-        model.remove(record);
+        this.model.setRecords((ObservableList<Record>) model.getRecords());
     }
 }

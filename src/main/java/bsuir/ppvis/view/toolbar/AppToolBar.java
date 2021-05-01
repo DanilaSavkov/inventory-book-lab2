@@ -1,18 +1,16 @@
-package bsuir.ppvis.view.decomposition;
+package bsuir.ppvis.view.toolbar;
 
-import bsuir.ppvis.view.styles.ToolBarTitles;
-import javafx.css.Styleable;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 
-public class AppToolBar implements ToolBarTitles {
-    private static final double BUTTON_HEIGHT = 25;
-    private static final double BUTTON_WIDTH = 75;
+public class AppToolBar {
+    private static final double BUTTON_HEIGHT = 30;
+    private static final double BUTTON_WIDTH = 90;
     private static final ToolBar TOOL_BAR = new ToolBar();
-    private static final Button ADD_BUTTON = new Button(ADDING_TITLE);
-    private static final Button SEARCH_BUTTON = new Button(SEARCH_TITLE);
-    private static final Button DELETE_BUTTON = new Button(DELETE_TITLE);
+    private static final Button ADD_BUTTON = new Button("Добавить");
+    private static final Button SEARCH_BUTTON = new Button("Найти");
+    private static final Button DELETE_BUTTON = new Button("Удалить");
 
     public static ToolBar getToolBar() {
         configureToolBar();

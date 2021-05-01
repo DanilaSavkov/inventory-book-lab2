@@ -7,10 +7,10 @@ import javafx.collections.FXCollections;
 
 import java.util.List;
 
-public class InventoryBookSearchController {
+public class SearchController {
     private final InventoryBookModel model;
 
-    public InventoryBookSearchController(InventoryBookModel model) {
+    public SearchController(InventoryBookModel model) {
         this.model = model;
     }
 

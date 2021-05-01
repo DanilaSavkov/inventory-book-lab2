@@ -8,7 +8,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 
-public class TableRecordsDialog extends Dialog<InventoryBookModel> {
+public abstract class TableRecordsDialog extends Dialog<InventoryBookModel> {
     private InventoryBookModel model;
     private final TableDialogContent content;
     private static final ButtonType OK_BUTTON = new ButtonType("Ок", ButtonBar.ButtonData.APPLY);

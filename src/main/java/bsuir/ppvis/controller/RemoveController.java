@@ -5,18 +5,14 @@ import bsuir.ppvis.model.decomposition.Record;
 
 import java.util.List;
 
-public class InventoryBookRemoveController {
+public class RemoveController {
     private final InventoryBookModel model;
 
-    public InventoryBookRemoveController(InventoryBookModel model) {
+    public RemoveController(InventoryBookModel model) {
         this.model = model;
     }
 
-    public void remove(Record record) {
-        model.remove(record);
-    }
-
-    public void removeAll(List<Record> records) {
+    public void remove(List<Record> records) {
         model.getRecords().removeIf(records::contains);
     }
 }

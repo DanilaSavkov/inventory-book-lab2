@@ -1,23 +1,23 @@
 package bsuir.ppvis.view;
 
-import bsuir.ppvis.controller.InventoryBookController;
+import bsuir.ppvis.controller.AddingController;
 import bsuir.ppvis.model.InventoryBookModel;
 import bsuir.ppvis.model.decomposition.Record;
 import bsuir.ppvis.model.exceptions.XMLReadingException;
 import bsuir.ppvis.model.exceptions.XMLWritingException;
 import bsuir.ppvis.model.file.InventoryBookReader;
 import bsuir.ppvis.model.file.InventoryBookWriter;
-import bsuir.ppvis.view.decomposition.AppMenuBar;
-import bsuir.ppvis.view.decomposition.PageControl;
-import bsuir.ppvis.view.decomposition.AppTableView;
-import bsuir.ppvis.view.decomposition.AppToolBar;
-import bsuir.ppvis.view.decomposition.menus.EditMenu;
-import bsuir.ppvis.view.decomposition.menus.FileMenu;
+import bsuir.ppvis.view.menubar.AppMenuBar;
+import bsuir.ppvis.view.pagecontrol.PageControl;
+import bsuir.ppvis.view.tableview.AppTableView;
+import bsuir.ppvis.view.toolbar.AppToolBar;
+import bsuir.ppvis.view.menubar.menus.EditMenu;
+import bsuir.ppvis.view.menubar.menus.FileMenu;
 import bsuir.ppvis.view.dialogs.AddingDialog;
 import bsuir.ppvis.view.dialogs.RemoveTableRecordsDialog;
 import bsuir.ppvis.view.dialogs.SearchTableRecordsDialog;
 import bsuir.ppvis.view.dialogs.TableRecordsDialog;
-import bsuir.ppvis.view.styles.ViewStyles;
+import javafx.beans.InvalidationListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -28,9 +28,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.Optional;
 
-public class AppView implements ViewStyles {
+public class AppView {
     private final InventoryBookModel model;
-    private final InventoryBookController controller;
+    private final AddingController controller;
     private final FileChooser fileChooser;
 
     private static final BorderPane VIEW = new BorderPane();
@@ -39,12 +39,13 @@ public class AppView implements ViewStyles {
     private final BorderPane pageControl;  // bottom
     private static final TableView<Record> TABLE = new AppTableView();    // center
 
-    public AppView(InventoryBookModel model, InventoryBookController controller) {
+    public AppView(InventoryBookModel model, AddingController controller) {
         this.model = model;
         this.controller = controller;
-        this.fileChooser = new FileChooser();
+        fileChooser = new FileChooser();
 
-        this.pageControl = new PageControl();
+        pageControl = new PageControl(model);
+        model.pageProperty().addListener((InvalidationListener) listener -> updateTableContent());
 
         configureFileChooser();
         configureView();
@@ -61,8 +62,7 @@ public class AppView implements ViewStyles {
         configureToolBar();
         VIEW.setBottom(pageControl);
         VIEW.setCenter(TABLE);
-        TABLE.setItems((ObservableList<Record>) model.getRecords());
-        setStyles();
+        TABLE.setItems(model.getPage());
     }
 
     private void configureToolBar() {
@@ -121,17 +121,11 @@ public class AppView implements ViewStyles {
             updateTableContent();
         } catch (XMLReadingException e) {
             e.printStackTrace();
+        } catch (IllegalArgumentException ignored) {
         }
     }
 
     private void updateTableContent() {
-        TABLE.setItems((ObservableList<Record>) model.getRecords());
-    }
-
-    @Override
-    public void setStyles() {
-        MENU_BAR.setStyle(MENU_BAR_CSS_STYLE);
-        TOOL_BAR.setStyle(TOOL_BAR_CSS_STYLE);
-        pageControl.setStyle(PAGE_CONTROL_CSS_STYLE);
+        TABLE.setItems((ObservableList<Record>) model.getPage());
     }
 }

@@ -1,8 +1,7 @@
 package bsuir.ppvis.view.dialogs;
 
-import bsuir.ppvis.controller.InventoryBookController;
-import bsuir.ppvis.controller.InventoryBookRemoveController;
-import bsuir.ppvis.controller.InventoryBookSearchController;
+import bsuir.ppvis.controller.RemoveController;
+import bsuir.ppvis.controller.SearchController;
 import bsuir.ppvis.model.InventoryBookModel;
 import bsuir.ppvis.model.decomposition.Record;
 import bsuir.ppvis.model.decomposition.RecordField;
@@ -14,13 +13,13 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
 public class RemoveTableRecordsDialog extends TableRecordsDialog {
-    private final InventoryBookRemoveController removeController;
-    private final InventoryBookSearchController searchController;
+    private final RemoveController removeController;
+    private final SearchController searchController;
 
     public RemoveTableRecordsDialog(InventoryBookModel model) {
         super("Удалить записи", model);
-        removeController = new InventoryBookRemoveController(model);
-        searchController = new InventoryBookSearchController(model);
+        removeController = new RemoveController(model);
+        searchController = new SearchController(model);
         setResultConverter(dialogCallback());
     }
 
@@ -41,7 +40,7 @@ public class RemoveTableRecordsDialog extends TableRecordsDialog {
     }
 
     private void deleteRecords() {
-        removeController.removeAll(getContent().getTableView().getItems());
+        removeController.remove(getContent().getTableView().getItems());
         getContent().getTableView().setItems((ObservableList<Record>) getModel().getRecords());
     }
 

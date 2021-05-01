@@ -22,10 +22,6 @@ public class Storage {
         return register;
     }
 
-    public boolean equals(Storage storage) {
-        return this.address.equals(storage.address);
-    }
-
     public void add(Product product, int count) {
         if (register.containsKey(product)) {
             int currentCount = register.get(product);

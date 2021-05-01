@@ -2,7 +2,7 @@ package bsuir.ppvis.view.dialogs.content;
 
 import bsuir.ppvis.model.decomposition.RecordField;
 import bsuir.ppvis.model.decomposition.Record;
-import bsuir.ppvis.view.decomposition.AppTableView;
+import bsuir.ppvis.view.tableview.AppTableView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
