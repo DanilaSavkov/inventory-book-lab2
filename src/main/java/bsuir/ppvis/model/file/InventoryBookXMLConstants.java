@@ -11,14 +11,3 @@ public interface InventoryBookXMLConstants {
     String FABRICATOR_PAYER_ACCOUNT_NUMBER = "fabricator_pan";
 }
 
-/*  XML STRUCTURE
-    <inventory_book>
-        <record>
-            <product name="">
-                <fabricator name="" pan=""/>
-            </product>
-            <count> </count>
-            <storage_address> </storage_address>
-        </record>
-    </inventory_book>
-*/

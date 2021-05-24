@@ -43,7 +43,11 @@ public class InventoryBookReader implements InventoryBookXMLConstants {
                 Fabricator fabricator = new Fabricator(fabricatorName, fabricatorPayerAccountNumber);
                 Product product = new Product(productName, fabricator);
                 Storage storage = new Storage(storageAddress);
-                storage.add(product, Integer.parseInt(productCountOnStorage));
+                int count = 0;
+                try {
+                    count = Integer.parseInt(productCountOnStorage);
+                } catch (NumberFormatException ignored) {}
+                storage.add(product, count);
                 Record record = new Record(product, storage);
                 inventoryBook.add(record);
             }

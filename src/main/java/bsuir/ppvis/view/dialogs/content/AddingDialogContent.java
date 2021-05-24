@@ -20,8 +20,8 @@ public class AddingDialogContent extends GridPane {
         this.addRow(2, new Label(RecordField.FABRICATOR_NUMBER.getName() + ": "), fabricatorPanField);
         this.addRow(3, new Label(RecordField.PRODUCT_COUNT.getName() + ": "), productCountField);
         this.addRow(4, new Label(RecordField.STORAGE_ADDRESS.getName() + ": "), storageAddressField);
-        setFieldValueToInteger(fabricatorPanField, 9);
-        setFieldValueToInteger(productCountField, 6);
+//        setFieldValueToInteger(fabricatorPanField, 9);
+//        setFieldValueToInteger(productCountField, 6);
     }
 
     public String getProductName() {

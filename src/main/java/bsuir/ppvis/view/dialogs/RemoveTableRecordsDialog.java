@@ -3,9 +3,6 @@ package bsuir.ppvis.view.dialogs;
 import bsuir.ppvis.controller.RemoveController;
 import bsuir.ppvis.controller.SearchController;
 import bsuir.ppvis.model.InventoryBookModel;
-import bsuir.ppvis.model.decomposition.Record;
-import bsuir.ppvis.model.decomposition.RecordField;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
@@ -17,31 +14,29 @@ public class RemoveTableRecordsDialog extends TableRecordsDialog {
     private final SearchController searchController;
 
     public RemoveTableRecordsDialog(InventoryBookModel model) {
-        super("Удалить записи", model);
+        super(REMOVE_RECORDS_TITLE, model);
         removeController = new RemoveController(model);
         searchController = new SearchController(model);
         setResultConverter(dialogCallback());
     }
 
     @Override
-    public void configureContent() {
-        super.configureContent();
-        Button searchButton = new Button("Показать");
+    public void configureContent(InventoryBookModel model) {
+        super.configureContent(model);
+        Button searchButton = new Button(SHOW_TITLE);
         ((BorderPane) getContent().getTop()).setRight(new HBox(searchButton, getContent().getButton()));
         searchButton.setOnAction(action -> searchRecords());
-        getContent().getButton().setOnAction(action ->deleteRecords());
-    }
-
-    private void searchRecords() {
-        RecordField field = getContent().getChoiceBox().getValue();
-        String value = getContent().getTextField().getText();
-        getContent().getTableView().setItems((ObservableList<Record>) searchController.find(field, value));
-        getContent().getTextField().clear();
+        getContent().getButton().setOnAction(action -> deleteRecords());
     }
 
     private void deleteRecords() {
+        searchRecords();
+        getContent().getPageControl().getChoiceBox().setValue(Integer.MAX_VALUE);
         removeController.remove(getContent().getTableView().getItems());
-        getContent().getTableView().setItems((ObservableList<Record>) getModel().getRecords());
+        configureContent(getModel());
+        getContent().getTableView().setItems(getModel().getRecords());
+        getContent().getTextField1().clear();
+        getContent().getTextField2().clear();
     }
 
     private Callback<ButtonType, InventoryBookModel> dialogCallback() {

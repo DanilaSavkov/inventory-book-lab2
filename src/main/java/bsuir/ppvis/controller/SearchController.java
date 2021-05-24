@@ -1,7 +1,6 @@
 package bsuir.ppvis.controller;
 
 import bsuir.ppvis.model.InventoryBookModel;
-import bsuir.ppvis.model.decomposition.RecordField;
 import bsuir.ppvis.model.decomposition.Record;
 import javafx.collections.FXCollections;
 
@@ -14,78 +13,66 @@ public class SearchController {
         this.model = model;
     }
 
-    public List<Record> find(RecordField recordField, String value) {
+    public List<Record> find(ChoiceBoxConstants recordField, String... values) {
         List<Record> records = FXCollections.observableArrayList();
         switch (recordField) {
             case ALL:
                 records = model.getRecords();
                 break;
-            case PRODUCT_NAME:
-                records = findByProductName(value);
+            case PRODUCT:
+                findByProductName(records, values[0]);
+                findByProductCount(records, values[1]);
                 break;
-            case FABRICATOR_NAME:
-                records = findByFabricatorName(value);
+            case FABRICATOR:
+                findByFabricatorName(records, values[0]);
+                findByFabricatorNumber(records, values[1]);
                 break;
-            case FABRICATOR_NUMBER:
-                records = findByFabricatorNumber(value);
-                break;
-            case PRODUCT_COUNT:
-                records = findByProductCount(value);
-                break;
-            case STORAGE_ADDRESS:
-                records = findByStorageAddress(value);
+            case STORAGE:
+                findByStorageAddress(records, values[0]);
                 break;
         }
         return records;
     }
 
-    private List<Record> findByProductName(String name) {
-        List<Record> result = FXCollections.observableArrayList();
+    private void findByProductName(List<Record> records, String name) {
         for (Record record : model.getRecords()) {
-            if (record.getProductName().equals(name)) {
-                result.add(record);
+            if (record.getProductName().contains(name) && !records.contains(record)) {
+                records.add(record);
             }
         }
-        return result;
     }
 
-    private List<Record> findByFabricatorName(String name) {
-        List<Record> result = FXCollections.observableArrayList();
+    private void findByFabricatorName(List<Record> records, String name) {
         for (Record record : model.getRecords()) {
-            if (record.getFabricatorName().equals(name)) {
-                result.add(record);
+            if (record.getFabricatorName().contains(name) && !records.contains(record)) {
+                records.add(record);
             }
         }
-        return result;
     }
 
-    private List<Record> findByFabricatorNumber(String number) {
-        List<Record> result = FXCollections.observableArrayList();
+    private void findByFabricatorNumber(List<Record> records, String number) {
         for (Record record : model.getRecords()) {
-            if (String.valueOf(record.getFabricatorPayerAccountNumber()).equals(number)) {
-                result.add(record);
+            if (String.valueOf(record.getFabricatorPayerAccountNumber()).equals(number) && !records.contains(record)) {
+                records.add(record);
             }
         }
-        return result;
     }
 
-    private List<Record> findByProductCount(String count) {
-        List<Record> result = FXCollections.observableArrayList();
+    private void findByProductCount(List<Record> records, String count) {
         for (Record record : model.getRecords()) {
-            if (String.valueOf(record.getProductCountOnStorage()).equals(count)) {
-                result.add(record);
+            if ((String.valueOf(record.getProductCountStringOnStorage()).equals(count)
+                    || (count.equals("0") && record.getProductCountOnStorage() == 0))
+                    && !records.contains(record)) {
+                records.add(record);
             }
         }
-        return result;
     }
 
-    private List<Record> findByStorageAddress(String address) {
-        List<Record> result = FXCollections.observableArrayList();
+    private void findByStorageAddress(List<Record> records, String address) {
         for (Record record : model.getRecords()) {
-            if (record.getStorageAddress().equals(address)) {
-                result.add(record);
+            if (record.getStorageAddress().contains(address) && !records.contains(record)) {
+                records.add(record);
             }
         }
-        return result;
     }
 }

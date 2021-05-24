@@ -19,7 +19,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class InventoryBookWriter implements InventoryBookXMLConstants {
-    private static final String FORMAT = ".table";
     private final InventoryBookModel model;
     private Document document;
 
@@ -27,8 +26,8 @@ public class InventoryBookWriter implements InventoryBookXMLConstants {
         this.model = model;
     }
 
-    public void writeXMLTo(File directory) throws XMLWritingException {
-        try (FileWriter writer = new FileWriter(new File(directory + FORMAT))) {
+    public void writeXMLTo(File file) throws XMLWritingException {
+        try (FileWriter writer = new FileWriter(file)) {
             document = buildDocument();
             configureDocument();
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -38,6 +37,8 @@ public class InventoryBookWriter implements InventoryBookXMLConstants {
             transformer.transform(source, streamResult);
         } catch (IOException | ParserConfigurationException | TransformerException exception) {
             throw new XMLWritingException("XML Document can't be generated", exception);
+        } catch (NullPointerException ignored) {
+
         }
     }
 
@@ -66,7 +67,7 @@ public class InventoryBookWriter implements InventoryBookXMLConstants {
         element.setAttribute(PRODUCT_NAME, record.getProductName());
         element.setAttribute(FABRICATOR_NAME, record.getFabricatorName());
         element.setAttribute(FABRICATOR_PAYER_ACCOUNT_NUMBER, String.valueOf(record.getFabricatorPayerAccountNumber()));
-        element.setAttribute(PRODUCT_COUNT_ON_STORAGE, record.getProductCountOnStorage());
+        element.setAttribute(PRODUCT_COUNT_ON_STORAGE,  record.getProductCountStringOnStorage());
         element.setAttribute(STORAGE_ADDRESS, record.getStorageAddress());
         return element;
     }

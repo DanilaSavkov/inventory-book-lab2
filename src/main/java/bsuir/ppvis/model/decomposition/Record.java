@@ -38,8 +38,16 @@ public class Record {
         return product.getFabricator().getPayerAccountNumber();
     }
 
-    public String getProductCountOnStorage() {
+    public String getProductCountStringOnStorage() {
         return productCountOnStorage;
+    }
+
+    public int getProductCountOnStorage() {
+        try {
+            return Integer.parseInt(productCountOnStorage);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 
     public String getStorageAddress() {

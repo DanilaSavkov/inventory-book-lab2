@@ -44,7 +44,7 @@ public class Storage {
     }
 
     public int getProductCount(Product product) throws ProductNotFoundException {
-        if (register.containsKey(product)) {
+        if (register.containsKey(product) && register.get(product) > 0) {
             return register.get(product);
         } else throw new ProductNotFoundException();
     }

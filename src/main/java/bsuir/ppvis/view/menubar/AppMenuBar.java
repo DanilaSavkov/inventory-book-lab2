@@ -1,25 +1,21 @@
 package bsuir.ppvis.view.menubar;
 
+import bsuir.ppvis.view.style.Styles;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import bsuir.ppvis.view.menubar.menus.EditMenu;
 import bsuir.ppvis.view.menubar.menus.FileMenu;
 
-public class AppMenuBar {
-    private static final MenuBar MENU_BAR = new MenuBar();
-    private static final Menu FILE_MENU = FileMenu.getMenu();
-    private static final Menu EDIT_MENU = EditMenu.getMenu();
+public class AppMenuBar extends MenuBar implements Styles {
+    private static final Menu FILE_MENU = new FileMenu();
+    private static final Menu EDIT_MENU = new EditMenu();
 
-    public static MenuBar getMenuBar() {
-        MENU_BAR.getMenus().addAll(FILE_MENU, EDIT_MENU);
-        return MENU_BAR;
+    public AppMenuBar() {
+        super(FILE_MENU, EDIT_MENU);
+        configure();
     }
 
-    public static Menu getFileMenu() {
-        return FILE_MENU;
-    }
-
-    public static Menu getEditMenu() {
-        return EDIT_MENU;
+    private void configure() {
+        setStyle(MENU_BAR_STYLE);
     }
 }

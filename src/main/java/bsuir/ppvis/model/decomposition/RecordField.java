@@ -1,12 +1,14 @@
 package bsuir.ppvis.model.decomposition;
 
-public enum RecordField {
-    ALL("Все записи"),
-    PRODUCT_NAME("Название продукта"),
-    FABRICATOR_NAME("Название производителя"),
-    FABRICATOR_NUMBER("УНП производителя"),
-    PRODUCT_COUNT("Количество на складе"),
-    STORAGE_ADDRESS("Адрес склада");
+import bsuir.ppvis.view.style.Titles;
+
+public enum RecordField implements Titles {
+    ALL(ALL_RECORDS_TITLE),
+    PRODUCT_NAME(PRODUCT_NAME_TITLE),
+    FABRICATOR_NAME(FABRICATOR_NAME_TITLE),
+    FABRICATOR_NUMBER(FABRICATOR_NUMBER_TITLE),
+    PRODUCT_COUNT(COUNT_ON_STORAGE_TITLE),
+    STORAGE_ADDRESS(STORAGE_ADDRESS_TITLE);
 
     private final String name;
 

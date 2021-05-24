@@ -5,18 +5,19 @@ import bsuir.ppvis.model.decomposition.Product;
 import bsuir.ppvis.model.decomposition.Record;
 import bsuir.ppvis.model.decomposition.Storage;
 import bsuir.ppvis.view.dialogs.content.AddingDialogContent;
+import bsuir.ppvis.view.style.Titles;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 
-public class AddingDialog extends Dialog<Record> {
+public class AddingDialog extends Dialog<Record> implements Titles {
     private final AddingDialogContent content;
-    private static final ButtonType OK_BUTTON = new ButtonType("Ок", ButtonBar.ButtonData.APPLY);
-    private static final ButtonType CANCEL_BUTTON = new ButtonType("Отмена", ButtonBar.ButtonData.CANCEL_CLOSE);
+    private static final ButtonType OK_BUTTON = new ButtonType(OK_TITLE, ButtonBar.ButtonData.APPLY);
+    private static final ButtonType CANCEL_BUTTON = new ButtonType(CANCEL_TITLE, ButtonBar.ButtonData.CANCEL_CLOSE);
 
     public AddingDialog() {
         super();
         content = new AddingDialogContent();
-        setTitle("Добавить запись");
+        setTitle(ADD_RECORD_TITLE);
         getDialogPane().setContent(content);
         getDialogPane().getButtonTypes().addAll(OK_BUTTON, CANCEL_BUTTON);
         setResultConverter(dialogCallback());

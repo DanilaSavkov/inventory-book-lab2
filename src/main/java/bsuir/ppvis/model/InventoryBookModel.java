@@ -9,7 +9,7 @@ import java.util.List;
 
 public class InventoryBookModel {
     private final ListProperty<Record> records = new SimpleListProperty<>();
-    private final ListProperty<Record> page = new SimpleListProperty<>();
+    private ListProperty<Record> page = new SimpleListProperty<>();
     private final IntegerProperty recordsPerPage = new SimpleIntegerProperty(Integer.MAX_VALUE);
     private final IntegerProperty pageCount = new SimpleIntegerProperty(1);
     private final IntegerProperty currentPageIndex = new SimpleIntegerProperty(0);
@@ -22,8 +22,12 @@ public class InventoryBookModel {
         records.setValue(FXCollections.observableArrayList(model.records));
     }
 
-    public void add(Record record) {
-        records.add(record);
+    public InventoryBookModel(List<Record> records) {
+        this.records.setValue((ObservableList<Record>) records);
+    }
+
+    public void add(Record newRecord) {
+        records.add(newRecord);
     }
 
     public void updatePage() {
@@ -78,5 +82,9 @@ public class InventoryBookModel {
 
     private int getEndIndex(int startIndex) {
         return Math.min(startIndex + recordsPerPage.get(), records.get().size());
+    }
+
+    public void setPage(ObservableList<Record> page) {
+        this.page.set(page);
     }
 }

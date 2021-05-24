@@ -7,19 +7,14 @@ import bsuir.ppvis.model.exceptions.XMLReadingException;
 import bsuir.ppvis.model.exceptions.XMLWritingException;
 import bsuir.ppvis.model.file.InventoryBookReader;
 import bsuir.ppvis.model.file.InventoryBookWriter;
+import bsuir.ppvis.view.dialogs.*;
 import bsuir.ppvis.view.menubar.AppMenuBar;
 import bsuir.ppvis.view.pagecontrol.PageControl;
 import bsuir.ppvis.view.tableview.AppTableView;
 import bsuir.ppvis.view.toolbar.AppToolBar;
 import bsuir.ppvis.view.menubar.menus.EditMenu;
 import bsuir.ppvis.view.menubar.menus.FileMenu;
-import bsuir.ppvis.view.dialogs.AddingDialog;
-import bsuir.ppvis.view.dialogs.RemoveTableRecordsDialog;
-import bsuir.ppvis.view.dialogs.SearchTableRecordsDialog;
-import bsuir.ppvis.view.dialogs.TableRecordsDialog;
 import javafx.beans.InvalidationListener;
-import javafx.collections.ObservableList;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -28,47 +23,52 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.Optional;
 
-public class AppView {
+public class AppView extends BorderPane {
     private final InventoryBookModel model;
     private final AddingController controller;
+
     private final FileChooser fileChooser;
+    private final MenuBar menuBar;
+    private final ToolBar toolBar;
+    private BorderPane pageControl;
+    private final TableView<Record> tableView;
 
-    private static final BorderPane VIEW = new BorderPane();
-    private static final MenuBar MENU_BAR = AppMenuBar.getMenuBar();    // top
-    private static final ToolBar TOOL_BAR = AppToolBar.getToolBar();    // left
-    private final BorderPane pageControl;  // bottom
-    private static final TableView<Record> TABLE = new AppTableView();    // center
-
-    public AppView(InventoryBookModel model, AddingController controller) {
+    public AppView(InventoryBookModel model) {
         this.model = model;
-        this.controller = controller;
+
+        toolBar = new AppToolBar();
+        controller = new AddingController(model);
         fileChooser = new FileChooser();
-
         pageControl = new PageControl(model);
-        model.pageProperty().addListener((InvalidationListener) listener -> updateTableContent());
-
-        configureFileChooser();
-        configureView();
+        tableView = new AppTableView();
+        menuBar = new AppMenuBar();
+        configure();
     }
 
-    public Parent asParent() {
-        return VIEW;
-    }
-
-    private void configureView() {
-        VIEW.setTop(MENU_BAR);
+    private void configure() {
+        setTop(menuBar);
+        setLeft(toolBar);
+        setBottom(pageControl);
+        setCenter(tableView);
         configureMenuBar();
-        VIEW.setLeft(TOOL_BAR);
         configureToolBar();
-        VIEW.setBottom(pageControl);
-        VIEW.setCenter(TABLE);
-        TABLE.setItems(model.getPage());
+        configureFileChooser();
+        configureTableView();
+        configureModel();
+    }
+
+    private void configureTableView() {
+        tableView.setItems(model.getPage());
+    }
+
+    private void configureModel() {
+        model.pageProperty().addListener((InvalidationListener) listener -> updateTableContent());
     }
 
     private void configureToolBar() {
         AppToolBar.getAddButton().setOnAction(actionEvent -> addRecordOrNothing());
         AppToolBar.getSearchButton().setOnAction(actionEvent -> searchRecords());
-        AppToolBar.getDeleteButton().setOnAction(actionEvent -> removeRecords());
+        AppToolBar.getRemoveButton().setOnAction(actionEvent -> removeRecords());
     }
 
     private void configureMenuBar() {
@@ -86,46 +86,75 @@ public class AppView {
     private void addRecordOrNothing() {
         Dialog<Record> dialog = new AddingDialog();
         Optional<Record> result = dialog.showAndWait();
-        result.ifPresent(record -> controller.add(result.orElse(null)));
+        String message = "Запись добавлена!";
+        Alert.AlertType type = Alert.AlertType.INFORMATION;
+        if (result.isPresent()) {
+            controller.add(result.get());
+        } else {
+            message = "Запись не была добавлена";
+            type = Alert.AlertType.WARNING;
+        }
+        Alert alert = new Alert(type);
+        alert.setHeaderText(message);
+        alert.showAndWait();
     }
 
     private void searchRecords() {
-        TableRecordsDialog dialog = new SearchTableRecordsDialog(model);
+        InventoryBookModel modelClone = new InventoryBookModel(model);
+        TableRecordsDialog dialog = new SearchTableRecordsDialog(modelClone);
         dialog.showAndWait();
     }
 
     private void removeRecords() {
         InventoryBookModel modelClone = new InventoryBookModel(model);
+        int previousSize = modelClone.getRecords().size();
+        int currentSize = previousSize;
         TableRecordsDialog dialog = new RemoveTableRecordsDialog(modelClone);
         Optional<InventoryBookModel> result = dialog.showAndWait();
-        result.ifPresent(record -> controller.setModel(result.orElse(model)));
+        if (result.isPresent()) {
+            controller.setModel(result.get());
+            currentSize = modelClone.getRecords().size();
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Было удалено " + (previousSize - currentSize) + " записей");
+        alert.showAndWait();
         updateTableContent();
     }
 
     private void saveTable() {
         InventoryBookWriter writer = new InventoryBookWriter(model);
         File directory = fileChooser.showSaveDialog(new Stage());
+        tryToSaveTable(writer, directory);
+    }
+
+    private void tryToSaveTable(InventoryBookWriter writer, File directory) {
         try {
             writer.writeXMLTo(directory);
         } catch (XMLWritingException e) {
-            e.printStackTrace();
+            Alert alert = new FileAlert(e);
+            alert.showAndWait();
         }
     }
 
     private void openTable() {
         InventoryBookReader reader = new InventoryBookReader();
         File file = fileChooser.showOpenDialog(new Stage());
+        tryToOpenTable(reader, file);
+    }
+
+    private void tryToOpenTable(InventoryBookReader reader, File file) {
         try {
             InventoryBookModel model = reader.read(file);
             controller.setModel(model);
             updateTableContent();
         } catch (XMLReadingException e) {
-            e.printStackTrace();
+            Alert alert = new FileAlert(e);
+            alert.showAndWait();
         } catch (IllegalArgumentException ignored) {
         }
     }
 
     private void updateTableContent() {
-        TABLE.setItems((ObservableList<Record>) model.getPage());
+        tableView.setItems(model.getPage());
     }
 }
