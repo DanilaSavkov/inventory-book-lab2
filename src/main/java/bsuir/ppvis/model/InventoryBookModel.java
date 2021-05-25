@@ -9,7 +9,7 @@ import java.util.List;
 
 public class InventoryBookModel {
     private final ListProperty<Record> records = new SimpleListProperty<>();
-    private ListProperty<Record> page = new SimpleListProperty<>();
+    private final ListProperty<Record> page = new SimpleListProperty<>();
     private final IntegerProperty recordsPerPage = new SimpleIntegerProperty(Integer.MAX_VALUE);
     private final IntegerProperty pageCount = new SimpleIntegerProperty(1);
     private final IntegerProperty currentPageIndex = new SimpleIntegerProperty(0);

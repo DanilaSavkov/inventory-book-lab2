@@ -30,7 +30,7 @@ public class AppView extends BorderPane {
     private final FileChooser fileChooser;
     private final MenuBar menuBar;
     private final ToolBar toolBar;
-    private BorderPane pageControl;
+    private final BorderPane pageControl;
     private final TableView<Record> tableView;
 
     public AppView(InventoryBookModel model) {
